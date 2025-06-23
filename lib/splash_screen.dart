@@ -10,7 +10,7 @@ class SplashScreen extends StatefulWidget {
 class _SplashScreenState extends State<SplashScreen> {
   @override
   Widget build(BuildContext context) {
-    return const Scaffold(
+    return  Scaffold(
       backgroundColor: Colors.black,
       body: SafeArea(
         child: Padding(
@@ -29,7 +29,10 @@ class _SplashScreenState extends State<SplashScreen> {
                     color: Colors.white,
                   ),
                 ),
-              )
+              ),
+              Spacer(),
+                Image.asset("assets/cloudy.png", height: 350),
+              Spacer(),
             ],
           ),
         ),
