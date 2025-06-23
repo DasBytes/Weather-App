@@ -1,13 +1,19 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:weather_flutter/provider/theme_provider.dart';
 
-class WeatherAppHomeScreen extends StatefulWidget {
+class WeatherAppHomeScreen extends ConsumerStatefulWidget {
   const WeatherAppHomeScreen({super.key});
 
   @override
-  State<WeatherAppHomeScreen> createState() => _WeatherAppHomeScreenState();
+  ConsumerState<WeatherAppHomeScreen> createState() => _WeatherAppHomeScreenState();
 }
 
-class _WeatherAppHomeScreenState extends State<WeatherAppHomeScreen> {
+class _WeatherAppHomeScreenState extends ConsumerState<WeatherAppHomeScreen> {
+final themeMode = ref.watch(themeNotifierProvider);
+final notifier = ref.read(themeNotifierProvider.notifier);
+final isDark = ThemeMode == ThemeMode.dark;
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -40,7 +46,15 @@ class _WeatherAppHomeScreenState extends State<WeatherAppHomeScreen> {
           ),
         ),),
         Spacer(),
-        GestureDetector(child: Icon(Icons.light_mode)),
+        GestureDetector(
+          onTap: notifier.toggleTheme,
+
+          child: Icon(
+            isDark? Icons.light_mode:
+            Icons.light_mode),
+            ),
+         SizedBox(width: 25),
+
       ],
      ),
     );
