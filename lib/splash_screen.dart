@@ -1,4 +1,6 @@
+import 'dart:async';
 import 'package:flutter/material.dart';
+import 'package:weather_flutter/home_screen.dart';
 
 class SplashScreen extends StatefulWidget {
   const SplashScreen({super.key});
@@ -8,7 +10,26 @@ class SplashScreen extends StatefulWidget {
 }
 
 class _SplashScreenState extends State<SplashScreen> {
+
+  late Timer _timer;
   final Color buttonColor = Colors.blueAccent;
+@override
+  void initState() {
+   _timer = Timer(Duration(seconds: 3), () {
+//check if the widget is still mounted before navigating
+   if(mounted) {
+    Navigator.pushReplacement(context, MaterialPageRoute(builder: (context)=> WeatherAppHomeScreen() ),
+    );
+   }
+   });
+    super.initState();
+  }
+
+  @override
+  void dispose() {
+    _timer.cancel();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -56,7 +77,14 @@ class _SplashScreenState extends State<SplashScreen> {
                     ),
                   ),
                   onPressed: () {
-                    // TODO: Navigate or handle start
+                    // cancel the timer when the button is pressed to prevent the timer navigation
+                    _timer.cancel();
+    Navigator.pushReplacement(
+      context,
+     MaterialPageRoute(
+      builder: (context)=> WeatherAppHomeScreen()
+       ),
+    );
                   },
                   child:  Padding(
                     padding:
