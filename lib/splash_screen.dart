@@ -13,13 +13,13 @@ class _SplashScreenState extends State<SplashScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.black,
+      backgroundColor: Theme.of(context).primaryColor,
       body: SafeArea(
         child: Padding(
           padding: const EdgeInsets.symmetric(vertical: 40),
           child: Column(
             children: [
-              const Center(
+               Center(
                 child: Text(
                   "Discover The\n Weather In Your City",
                   textAlign: TextAlign.center,
@@ -28,21 +28,21 @@ class _SplashScreenState extends State<SplashScreen> {
                     fontWeight: FontWeight.w800,
                     letterSpacing: -0.5,
                     height: 1.2,
-                    color: Colors.white,
+                    color:  Theme.of(context).colorScheme.secondary,
                   ),
                 ),
               ),
               const Spacer(),
               Image.asset("assets/cloudy.png", height: 350),
               const Spacer(),
-              const Center(
+               Center(
                 child: Text(
                   "Get to know your weather maps\n radar recipitations forecast",
                   textAlign: TextAlign.center,
                   style: TextStyle(
                     fontSize: 17,
                     fontWeight: FontWeight.w400,
-                    color: Colors.white,
+                    color:  Theme.of(context).colorScheme.secondary,
                   ),
                 ),
               ),
@@ -58,7 +58,7 @@ class _SplashScreenState extends State<SplashScreen> {
                   onPressed: () {
                     // TODO: Navigate or handle start
                   },
-                  child: const Padding(
+                  child:  Padding(
                     padding:
                         EdgeInsets.symmetric(horizontal: 50, vertical: 15),
                     child: Text(
@@ -66,7 +66,7 @@ class _SplashScreenState extends State<SplashScreen> {
                       style: TextStyle(
                         fontWeight: FontWeight.bold,
                         fontSize: 18,
-                        color: Colors.white,
+                        color:  Theme.of(context).colorScheme.secondary,
                       ),
                     ),
                   ),

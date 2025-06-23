@@ -1,19 +1,26 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:weather_flutter/Theme/theme.dart';
+import 'package:weather_flutter/provider/theme_provider.dart';
 import 'package:weather_flutter/splash_screen.dart';
 
 void main() {
-  runApp(const MyApp());
+  runApp(const ProviderScope(child: MyApp()));
 }
 
-class MyApp extends StatelessWidget {
+class MyApp extends ConsumerWidget {
   const MyApp({super.key});
 
-  // This widget is the root of your application.
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
+    final themeMode = ref.watch(themeNotifierProvider);
+
     return MaterialApp(
-  debugShowCheckedModeBanner: false,
-  home: SplashScreen(),
+      theme: lightTheme,
+      darkTheme: darkTheme,
+      themeMode: themeMode,
+      debugShowCheckedModeBanner: false,
+      home: const SplashScreen(),
     );
   }
 }
