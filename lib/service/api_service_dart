@@ -1,60 +1,52 @@
-import 'package:http.dart' http;
+import 'dart:convert';
+import 'package:http/http.dart' as http;
 
-const String apiKey ="67399924d4a74989a2d192048251906";
+const String apiKey = "67399924d4a74989a2d192048251906";
 
 class WeatherApiService {
-    final String _baseUrl = "https://www.weatherapi.com/v1";
-    Future<Map<String, dynamic>> getHourlyForecast(String location) async {
-      final url = Uri.parse("$_baseUrl/forecast.json?key=$apiKey&q=$location&days=7");
-      final res = await http.get(url);
+  final String _baseUrl = "https://www.weatherapi.com/v1";
 
-      if(res.statusCode !=200)
-      {
-        throw Exception("Failed to fetch data: ${res.body}");
-      }
+  Future<Map<String, dynamic>> getHourlyForecast(String location) async {
+    final url = Uri.parse("$_baseUrl/forecast.json?key=$apiKey&q=$location&days=7");
+    final res = await http.get(url);
 
-      final data = json.decode(res.body);
+    if (res.statusCode != 200) {
+      throw Exception("Failed to fetch data: ${res.body}");
+    }
 
-    if(data.containsKey('error')) {
+    final data = json.decode(res.body);
+
+    if (data.containsKey('error')) {
       throw Exception(data['error']['message'] ?? 'Invalid location');
     }
 
     return data;
+  }
 
+  // for previous 7 days forecast
+  Future<List<Map<String, dynamic>>> getOastSevenDaysweather(String location) async {
+    final today = DateTime.now();
+    List<Map<String, dynamic>> pastWeather = [];
 
+    for (int i = 1; i <= 7; i++) {
+      final data = today.subtract(Duration(days: i));
+      final formattedDate =
+          "${data.year}-${data.month.toString().padLeft(2, "0")}-${data.day.toString().padLeft(2, "0")}";
 
-    }
+      final url = Uri.parse("$_baseUrl/history.json?key=$apiKey&q=$location&dt=$formattedDate");
+      final res = await http.get(url);
 
+      if (res.statusCode == 200) {
+        final data = json.decode(res.body);
 
-    // fore previous 7 days forecast
+        if (data.containsKey('error')) {
+          throw Exception(data['error']['message'] ?? 'Invalid location');
+        }
 
-     Future<List<Map<String, dynamic>> getOastSevenDaysweather (
-      String location,
-
-     ) async {
-       final today = Datetime.now();
-       for(int i=1 ;i<=7; i++) {
-      final data =today.subtract(duration(days: i));
-      final formattedDate = 
-      "$d{ata.year}-{data.month.toString().padLeft(2,"0")}-${data.day.toString().padLeft(2,"0")}";
-       
-       final url = Uri.parse("$_baseUrl/history.json?key=$apiKey&q=$location&dt=$formattedDate",
-
-       );
-        final res = await http.get(url);
-        if(res.statusCode ==200)
-      {
-       
+        pastWeather.add(data);
       }
-
-      final data = json.decode(res.body);
-
-    if(data.containsKey('error')) {
-      throw Exception(data['error']['message'] ?? 'Invalid location');
     }
 
-
-       }
-       return pastWeather;
-     }
+    return pastWeather;
+  }
 }
