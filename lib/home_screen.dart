@@ -6,60 +6,48 @@ class WeatherAppHomeScreen extends ConsumerStatefulWidget {
   const WeatherAppHomeScreen({super.key});
 
   @override
-  ConsumerState<WeatherAppHomeScreen> createState() => _WeatherAppHomeScreenState();
+  ConsumerState<WeatherAppHomeScreen> createState() =>
+      _WeatherAppHomeScreenState();
 }
 
-class _WeatherAppHomeScreenState extends ConsumerState<WeatherAppHomeScreen> {
-final themeMode = ref.watch(themeNotifierProvider);
-final notifier = ref.read(themeNotifierProvider.notifier);
-final isDark = ThemeMode == ThemeMode.dark;
-
+class _WeatherAppHomeScreenState
+    extends ConsumerState<WeatherAppHomeScreen> {
   @override
   Widget build(BuildContext context) {
+    final themeMode = ref.watch(themeNotifierProvider); // ✅ Moved inside build
+    final notifier = ref.read(themeNotifierProvider.notifier); // ✅ Moved inside build
+    final isDark = themeMode == ThemeMode.dark; // ✅ Moved inside build
+
     return Scaffold(
-     backgroundColor: Theme.of(context).primaryColor,
-     appBar: AppBar(
       backgroundColor: Theme.of(context).primaryColor,
-      actions: [
-        SizedBox(width: 25,),
-        SizedBox(width: 320, height: 50, child: TextField(
-          decoration: InputDecoration(
-            labelText: "Search city",
-            prefixIcon: Icon(Icons.search, color: Theme.of(context).colorScheme.surface),
-            labelStyle: TextStyle(color: Theme.of(context).colorScheme.surface),
-            errorBorder: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(15),
-              borderSide: BorderSide(
-                color: Theme.of(context).colorScheme.surface,
-                 
+      appBar: AppBar(
+        backgroundColor: Theme.of(context).primaryColor,
+        actions: [
+          const SizedBox(width: 25),
+          const SizedBox(
+            width: 320,
+            height: 50,
+            child: TextField(
+              decoration: InputDecoration(
+                labelText: "Search city",
+                prefixIcon: Icon(Icons.search),
+                border: OutlineInputBorder(
+                  borderRadius: BorderRadius.all(Radius.circular(15)),
+                ),
               ),
             ),
-            focusedBorder: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(15),
-              borderSide: BorderSide(
-                color: Theme.of(context).colorScheme.surface,
-                 
-              ),
-            ),
-
-
           ),
-        ),),
-        Spacer(),
-        GestureDetector(
-          onTap: notifier.toggleTheme,
-
-          child: Icon(
-            isDark? Icons.light_mode:
-            Icons.light_mode),
+          const SizedBox(width: 10), // Spacer removed (illegal in actions)
+          GestureDetector(
+            onTap: notifier.toggleTheme,
+            child: Icon(
+              isDark ? Icons.light_mode : Icons.dark_mode, // ✅ Fixed logic
+              color: isDark ? Colors.black : Colors.white,
             ),
-         SizedBox(width: 25),
-
-      ],
-     ),
+          ),
+          const SizedBox(width: 25),
+        ],
+      ),
     );
   }
 }
-
-// let's start form splash screen
-
