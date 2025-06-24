@@ -34,6 +34,25 @@ class WeatherApiService {
      ) async {
        final today = Datetime.now();
        for(int i=1 ;i<=7; i++) {
+      final data =today.subtract(duration(days: i));
+      final formattedDate = 
+      "$d{ata.year}-{data.month.toString().padLeft(2,"0")}-${data.day.toString().padLeft(2,"0")}";
+       
+       final url = Uri.parse("$_baseUrl/history.json?key=$apiKey&q=$location&dt=$formattedDate",
+
+       );
+        final res = await http.get(url);
+        if(res.statusCode ==200)
+      {
+       
+      }
+
+      final data = json.decode(res.body);
+
+    if(data.containsKey('error')) {
+      throw Exception(data['error']['message'] ?? 'Invalid location');
+    }
+
 
        }
        return pastWeather;
