@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:weather_flutter/provider/theme_provider.dart';
+import 'package:weather_flutter/service/api_service_dart';
 
 class WeatherAppHomeScreen extends ConsumerStatefulWidget {
   const WeatherAppHomeScreen({super.key});
@@ -12,6 +13,37 @@ class WeatherAppHomeScreen extends ConsumerStatefulWidget {
 
 class _WeatherAppHomeScreenState
     extends ConsumerState<WeatherAppHomeScreen> {
+      final _weatherService = WeatherApiService();
+        String city ="Surkhet";
+        String country = '';
+        Map<String, dynamic> currentValue = {};
+        List<dynamic> hourly =[];
+        List<dynamic> pastWeek =[];
+        List<dynamic> next7days =[];
+        
+        bool isLoading = false;
+
+        @override
+  void initState() {
+    
+    super.initState();
+    _fetchWeather();
+  }
+  Future<void> _fetchWeather() async {
+    setState(() {
+      isLoading = true;
+    });
+    try {
+      final forecast = await _weatherService.getHourlyForecast(city);
+      final past = await _weatherService.getpast(city);
+
+    } catch (e) {
+      Em
+      
+    }
+  }
+
+
   @override
   Widget build(BuildContext context) {
     final themeMode = ref.watch(themeNotifierProvider); // ✅ Moved inside build

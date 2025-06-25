@@ -43,6 +43,11 @@ class WeatherApiService {
           throw Exception(data['error']['message'] ?? 'Invalid location');
         }
 
+        else {
+          debugPrint('Failed to fetch past data for $formattedDate: ${res.body}');
+          
+        }
+
         pastWeather.add(data);
       }
     }
