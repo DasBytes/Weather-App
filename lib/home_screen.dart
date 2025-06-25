@@ -133,9 +133,23 @@ class _WeatherAppHomeScreenState
               children: [
                 Text(
                   "$city${country.isNotEmpty ? ',$country':''}",
-                  style: TextStyle(),
-                  
-                )
+                  maxLines: 1,
+                  textAlign: TextAlign.center,
+                  overflow: TextOverflow.ellipsis,
+
+                  style: TextStyle(
+                    fontSize: 40,
+                    color: Theme.of(context).colorScheme.secondary;
+                    fontWeight: fontWeight.w400,
+                  ),
+
+                ),
+                Text("${currentValue['temp_c']}°C",
+                 style: TextStyle(
+                    fontSize: 50,
+                    color: Theme.of(context).colorScheme.secondary;
+                    fontWeight: fontWeight.bold,
+                  ),)
               ],
             )
           ]
