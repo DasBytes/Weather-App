@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:weather_flutter/provider/theme_provider.dart';
 import 'package:weather_flutter/service/api_service_dart';
 
+
 class WeatherAppHomeScreen extends ConsumerStatefulWidget {
   const WeatherAppHomeScreen({super.key});
 
@@ -35,10 +36,32 @@ class _WeatherAppHomeScreenState
     });
     try {
       final forecast = await _weatherService.getHourlyForecast(city);
-      final past = await _weatherService.getpast(city);
+      final past = await _weatherService.getpastSevenDaysweather(city);
+      setState(() {
+        currentValue = forecast['current'] ?? {};
+        hourly = forecast['Forecast']?['forecastday']?[0]?['hour']??[];
+
+        //for next 7 days
+
+        next7days = forecast['forecast']?['forecastday']??[];
+
+        pastWeek = past;
+        city = forecast['location']?['name']??city;
+        country = forecast['loaction']?['country']?? '';
+        isLoading = false;
+
+      });
 
     } catch (e) {
-      Em
+
+      setState(() {
+        currentValue= {};
+        hourly= [];
+        pastWeek= [];
+        next7days= [];
+        isLoading = false;
+      });
+      
       
     }
   }

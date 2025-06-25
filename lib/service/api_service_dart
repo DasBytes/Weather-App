@@ -24,7 +24,7 @@ class WeatherApiService {
   }
 
   // for previous 7 days forecast
-  Future<List<Map<String, dynamic>>> getOastSevenDaysweather(String location) async {
+  Future<List<Map<String, dynamic>>> getpastSevenDaysweather(String location) async {
     final today = DateTime.now();
     List<Map<String, dynamic>> pastWeather = [];
 
@@ -45,7 +45,7 @@ class WeatherApiService {
 
         else {
           debugPrint('Failed to fetch past data for $formattedDate: ${res.body}');
-          
+
         }
 
         pastWeather.add(data);
