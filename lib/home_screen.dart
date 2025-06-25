@@ -51,6 +51,7 @@ class _WeatherAppHomeScreenState
         isLoading = false;
 
       });
+     
 
     } catch (e) {
 
@@ -61,7 +62,11 @@ class _WeatherAppHomeScreenState
         next7days= [];
         isLoading = false;
       });
-      
+       ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text("City not found or invlid. Please enter a valid city name",
+        ),
+        ),
+      );
       
     }
   }
@@ -83,6 +88,18 @@ class _WeatherAppHomeScreenState
             width: 320,
             height: 50,
             child: TextField(
+              onSubmitted: (value) {
+                if(value.trim().isEmpty){
+              ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text("Please enter a city name",
+        ),
+        ),
+      );
+       return;
+                }
+                city = value.trim();
+                _fetchWeather();
+              },
               decoration: InputDecoration(
                 labelText: "Search city",
                 prefixIcon: Icon(Icons.search),
@@ -97,10 +114,32 @@ class _WeatherAppHomeScreenState
             onTap: notifier.toggleTheme,
             child: Icon(
               isDark ? Icons.light_mode : Icons.dark_mode, // ✅ Fixed logic
-              color: isDark ? Colors.black : Colors.white,
+              color: isDark ? Colors.black : Colors.white, size: 30,
             ),
           ),
           const SizedBox(width: 25),
+        ],
+      ),
+      body: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          SizedBox(height: 20,),
+          if(isLoading)
+          const Center(child: CircularProgressIndicator(),)
+          else...[
+            if(currentValue.isNotEmpty)
+            Column(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                Text(
+                  "$city${country.isNotEmpty ? ',$country':''}",
+                  style: TextStyle(),
+                  
+                )
+              ],
+            )
+          ]
+
         ],
       ),
     );
