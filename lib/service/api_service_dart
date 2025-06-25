@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'package:http/http.dart' as http;
+import 'package:flutter/foundation.dart';
 
 const String apiKey = "67399924d4a74989a2d192048251906";
 
@@ -24,7 +25,7 @@ class WeatherApiService {
   }
 
   // for previous 7 days forecast
-  Future<List<Map<String, dynamic>>> getpastSevenDaysweather(String location) async {
+  Future<List<Map<String, dynamic>>> getOastSevenDaysweather(String location) async {
     final today = DateTime.now();
     List<Map<String, dynamic>> pastWeather = [];
 
