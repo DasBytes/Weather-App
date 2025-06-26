@@ -72,6 +72,11 @@ class _WeatherAppHomeScreenState
     final notifier = ref.read(themeNotifierProvider.notifier);
     final isDark = themeMode == ThemeMode.dark;
 
+    String iconPath = currentValue['condition']?['icon']??'';
+    String imageUrl = iconPath.isNotEmpty? "https:$iconPath":"";
+
+    Widget imagewidgets = imageUrl.isNotEmpty?Image.network(imageUrl, height: 200, width: 200, fit: BoxFit.cover):SizedBox();
+
     return Scaffold(
       backgroundColor: Theme.of(context).primaryColor,
       appBar: AppBar(
@@ -82,6 +87,9 @@ class _WeatherAppHomeScreenState
             width: 320,
             height: 50,
             child: TextField(
+              style: TextStyle(
+                color: Theme.of(context).colorScheme.secondary,
+              ),
               onSubmitted: (value) {
                 if (value.trim().isEmpty) {
                   ScaffoldMessenger.of(context).showSnackBar(
@@ -98,7 +106,9 @@ class _WeatherAppHomeScreenState
               },
               decoration: const InputDecoration(
                 labelText: "Search city",
-                prefixIcon: Icon(Icons.search),
+                prefixIcon: Icon(Icons.search,
+                
+                ),
                 border: OutlineInputBorder(
                   borderRadius: BorderRadius.all(Radius.circular(15)),
                 ),
@@ -147,6 +157,96 @@ class _WeatherAppHomeScreenState
                       fontWeight: FontWeight.bold, // ✅ fixed: fontWeight typo
                     ),
                   ),
+                  Text("${currentValue['condition']['text']}",
+                  style: TextStyle(
+                    fontSize: 22,
+                    color: Theme.of(context).colorScheme.onPrimary,
+                    
+                  ),
+                  ),
+                  imagewidgets,
+                  Padding(padding: EdgeInsets.all(15),
+                  child: Container(height: 100,
+                  width: double.maxFinite,
+                  decoration: BoxDecoration(
+                    color: Theme.of(context).colorScheme.primaryColor,
+                    boxShadow: [
+                      BoxShadow(
+                        color: Theme.of(context).colorScheme.primary,
+                        offset: Offset(1, 1),
+                        blurRadius: 10,
+                        spreadRadius: 1,
+                      )
+                    ],
+                    borderRadius: BorderRadius.circular(30),
+                  ),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceAround,
+                    children: [
+
+                      // Humidity
+                      Column(children: [
+
+                         Image.network("https://cdn-icons-png.freepik.com/512/9290/9290540.png", width: 30, height: 30,),
+                    Text("${currentValue['humidity']}%",
+                     style: TextStyle(  color: Theme.of(context).colorScheme.secondary, 
+                     fontWeight: FontWeight.bold,
+                     ),
+                     
+
+                     ),
+                     Text("Humidity",
+                     style: TextStyle(  color: Theme.of(context).colorScheme.secondary, 
+                     fontWeight: FontWeight.bold,
+                     ),
+                     )
+                      ],
+                      ),
+
+
+                       //  wind
+                      Column(children: [
+
+                         Image.network("https://png.pngtree.com/png-clipart/20190705/original/pngtree-vector-wind-icon-png-image_4184509.jpg", width: 30, height: 30,),
+                    Text("${currentValue['wind_kph']} kph",
+                     style: TextStyle(  color: Theme.of(context).colorScheme.secondary, 
+                     fontWeight: FontWeight.bold,
+                     ),
+                     
+
+                     ),
+                     Text("wind",
+                     style: TextStyle(  color: Theme.of(context).colorScheme.secondary, 
+                     fontWeight: FontWeight.bold,
+                     ),
+                     )
+                      ],
+                      ),
+                      
+                        //  maximum temperature
+                      Column(children: [
+
+                         Image.network("https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRbJS4wbuG9-dwHi7BFEESu4TLLIWIUBRmacw&s", width: 30, height: 30,),
+                    Text("${hourly.isNotEmpty ? hourly.map((h)=> h['temp_c']).reduce((a,b)=> a>b?a:b):"N/A"}",
+                     style: TextStyle(  color: Theme.of(context).colorScheme.secondary, 
+                     fontWeight: FontWeight.bold,
+                     ),
+                     
+
+                     ),
+                     Text("Max temp",
+                     style: TextStyle(  color: Theme.of(context).colorScheme.secondary, 
+                     fontWeight: FontWeight.bold,
+                     ),
+                     )
+                      ],
+                      ),
+                    
+                    ],
+                  ),
+                  ),
+
+                  )
                 ],
               )
           ]
