@@ -169,7 +169,7 @@ class _WeatherAppHomeScreenState
                   child: Container(height: 100,
                   width: double.maxFinite,
                   decoration: BoxDecoration(
-                    color: Theme.of(context).colorScheme.primaryColor,
+                    color: Theme.of(context).colorScheme.primary,
                     boxShadow: [
                       BoxShadow(
                         color: Theme.of(context).colorScheme.primary,
