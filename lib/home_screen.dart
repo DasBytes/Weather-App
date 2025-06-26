@@ -40,7 +40,7 @@ class _WeatherAppHomeScreenState
 
       setState(() {
         currentValue = forecast['current'] ?? {};
-        hourly = forecast['forecast']?['forecastday']?[0]?['hour'] ?? []; // ✅ fixed "Forecast" typo
+        hourly = forecast['forecast']?['forecastday']?[0]?['hour'] ?? [];
 
         // for next 7 days
         next7days = forecast['forecast']?['forecastday'] ?? [];
