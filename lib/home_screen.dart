@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:intl/intl.dart';
 import 'package:weather_flutter/provider/theme_provider.dart';
 import 'package:weather_flutter/service/api_service_dart';
 
@@ -65,6 +66,12 @@ class _WeatherAppHomeScreenState
       );
     }
   }
+
+ String formatTime(String timeString) {
+  DateTime time = DateTime.parse(timeString);
+  return DateFormat.j().format(time); // eg, 1am , 5am
+ }
+
 
   @override
   Widget build(BuildContext context) {
@@ -304,8 +311,46 @@ class _WeatherAppHomeScreenState
                           scrollDirection: Axis.horizontal,
                           itemCount: hourly.length,
                           itemBuilder: (context, index) {
+                            final hour= hourly[index];
+                            final now = DateTime.now();
+                            final hourTime = DateTime.parse(hour['time']);
+
+                            final isCurrentHour =
+                            now.hour = hourTime.hour && 
+                            now.day == hourTime.day;
+
                             return Padding(padding: EdgeInsets.all(8),
-                            child: Container(height: 70),
+                            child: Container(height: 70,
+                            padding: EdgeInsets.all(8),
+                            decoration: BoxDecoration(
+                              color: isCurrentHour ?Colors.orangeAccent : Colors.black38,
+                              borderRadius: BorderRadius.circular(40),
+                            ),
+                            child: Column( children: [
+                              Text(isCurrentHour ?
+                               "Now"
+                               : formatTime(hour['time']),
+                               style: TextStyle(
+                                color: 
+                                Theme.of(context).colorScheme.secondary,
+                                fontWeight: FontWeight.w500,
+
+                               ),
+                                ),
+                                SizedBox(height: 10,),
+                                Image.network(
+                                  "https:${hour['condition']?['icon']}",
+                                  width: 40,
+                                  height: 40,
+                                  fit: BoxFit.cover,
+
+                                ),
+                                 SizedBox(height: 10,),
+                                 
+
+                            ],
+                            ),
+                            ),
                             );
                           },
                         ),
