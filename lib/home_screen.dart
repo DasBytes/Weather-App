@@ -235,8 +235,7 @@ class _WeatherAppHomeScreenState
 
                      ),
                      Text("Max temp",
-                     style: TextStyle(  color: Theme.of(context).colorScheme.secondary, 
-                     fontWeight: FontWeight.bold,
+                     style: TextStyle(  color: Theme.of(context).colorScheme.secondary,
                      ),
                      )
                       ],
@@ -246,7 +245,74 @@ class _WeatherAppHomeScreenState
                   ),
                   ),
 
+                  ),
+                  SizedBox(height: 15),
+                  Container(height: 250, width: double.maxFinite, decoration: BoxDecoration(border: Border(
+                    top: BorderSide(
+                      color: Theme.of(context).colorScheme.secondary,
+                    ),
+                  ),
+                  borderRadius: BorderRadius.vertical(
+                    top: Radius.circular(40),
+
                   )
+                  ),
+                  child: Column(
+                    children: [
+                      SizedBox(height: 10),
+                      Padding(
+                        padding: EdgeInsets.symmetric(
+                          horizontal: 20,
+                          vertical: 10,
+                        ),
+                        child: Row(
+                          children: [
+                            Text(
+                              "Today Forecast",
+                              style: TextStyle(
+                                fontSize: 18,
+                                fontWeight: FontWeight.bold,
+                                color: Theme.of(context).colorScheme.secondary,
+                              ),
+                            ),
+                            GestureDetector(onTap: (){
+
+
+                            },
+                            child: Text(
+                              "Weekly Forecast",
+                              style: TextStyle(
+                                fontSize: 18,
+                                fontWeight: FontWeight.bold,
+                                color: Theme.of(context).colorScheme.onPrimary,
+                              ),
+                            ),
+                            ),
+
+                            
+
+
+                        ],),
+                        ),
+
+                        Divider(
+                          color: Theme.of(context).colorScheme.secondary,
+                        ),
+                        SizedBox(height: 20,),
+                        SizedBox(height: 150,
+                        child: ListView.builder(
+                          scrollDirection: Axis.horizontal,
+                          itemCount: hourly.length,
+                          itemBuilder: (context, index) {
+                            return Padding(padding: EdgeInsets.all(8),
+                            child: Container(height: 70),
+                            );
+                          },
+                        ),
+                        )
+                    ],
+                  ),
+                  ),
                 ],
               )
           ]
