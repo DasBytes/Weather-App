@@ -42,7 +42,7 @@ class _WeeklyForecastState extends State<WeeklyForecast> {
                     ),
                   ),
                   Text(
-                    "${widget['temp_c']}°C",
+                    "${widget.currentValue['temp_c']}°C",
                     style: TextStyle(
                       fontSize: 50,
                       color: Theme.of(context).colorScheme.secondary,
@@ -50,16 +50,42 @@ class _WeeklyForecastState extends State<WeeklyForecast> {
                     ),
                   ),
                   Text(
-                    "${widget['condition']['text']}",
+                    "${widget.currentValue['condition']['text']}",
                     style: TextStyle(
                       fontSize: 22,
                       color: Theme.of(context).colorScheme.onPrimary,
                     ),
                   ),
+                  Image.network("https:${widget.currentValue['condition']?['icon'] ?? ''}",
+                  width: 150,
+                  height: 150,
+                  fit: BoxFit.cover,
+                  
+                  )
 
               ],
               ),
-              )
+              ),
+              // Next 7 days Forecast
+              SizedBox(height: 20,)
+              Text(
+                "Next 7 days forecast",
+                style: TextStyle(
+                  fontSize: 18,
+                  fontWeight: FontWeight.bold,
+                  color: Theme.of(context).colorScheme.secondary,
+                ),
+              ),
+              SizedBox(height: 10,),
+              ...widget.next7days.map((day) {
+                final data = day['data'] ?? "";
+                final condition = day['day']?['condition']?['text']??''
+                return ListTile();
+              }),
+
+
+
+
             ],
           ),
         )
