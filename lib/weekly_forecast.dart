@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 
 class WeeklyForecast extends StatefulWidget {
 final   Map<String, dynamic> currentValue ;
@@ -18,6 +19,13 @@ final   Map<String, dynamic> currentValue ;
 }
 
 class _WeeklyForecastState extends State<WeeklyForecast> {
+
+ String formatApiData(String dataString) {
+  DateTime date = DateTime.parse(dataString);
+  return DateFormat('d MMM, EEEE').format(date);
+ }
+
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -79,8 +87,14 @@ class _WeeklyForecastState extends State<WeeklyForecast> {
               SizedBox(height: 10,),
               ...widget.next7days.map((day) {
                 final data = day['data'] ?? "";
-                final condition = day['day']?['condition']?['text']??''
-                return ListTile();
+                final condition = day['day']?['condition']?['text'] ?? '';
+                final Icon = day['day']?['condition']?['icon'] ?? '';
+                final maxtemp = day['day']?['maxtemp_c'] ?? '';
+                final mintemp = day['day']?['mintemp_c'] ?? '';
+                return ListTile(
+                  leading: Image.network('https:$Icon',width: 40,),
+                  title: Text(data),
+                );
               }),
 
 
