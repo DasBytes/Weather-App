@@ -122,11 +122,16 @@ class _WeeklyForecastState extends State<WeeklyForecast> {
               ),
               SizedBox(height: 10,),
               ...widget.pastWeek.map((day) {
-                final data = day['date'] ?? "";
-                final condition = day['day']?['condition']?['text'] ?? '';
-                final icon = day['day']?['condition']?['icon'] ?? '';
-                final maxTemp = day['day']?['maxtemp_c'] ?? '';
-                final minTemp = day['day']?['mintemp_c'] ?? '';
+                final forecastDay = day['forcast']?['forecastday'];
+                if(forecastDay== null || forecastDay.isEmpty) {
+                  return SizedBox.shrink();
+                }
+                final forecast = forecastDay[0];
+                final data = forecast['date'] ?? "";
+                final condition = forecast['day']?['condition']?['text'] ?? '';
+                final icon = forecast['day']?['condition']?['icon'] ?? '';
+                final maxTemp = forecast['day']?['maxtemp_c'] ?? '';
+                final minTemp = forecast['day']?['mintemp_c'] ?? '';
                 return ListTile(
                   leading: Image.network('https:$icon',width: 40,),
                   title: Text(
@@ -142,7 +147,7 @@ class _WeeklyForecastState extends State<WeeklyForecast> {
                   ),
                 );
 
-
+                 }),
 
 
             ],
