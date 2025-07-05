@@ -122,7 +122,7 @@ class _WeeklyForecastState extends State<WeeklyForecast> {
               ),
               SizedBox(height: 10,),
               ...widget.pastWeek.map((day) {
-                final forecastDay = day['forcast']?['forecastday'];
+                final forecastDay = day['forecast']?['forecastday'];
                 if(forecastDay== null || forecastDay.isEmpty) {
                   return SizedBox.shrink();
                 }

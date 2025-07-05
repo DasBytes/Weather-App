@@ -2,7 +2,7 @@ import 'dart:convert';
 import 'package:http/http.dart' as http;
 import 'package:flutter/foundation.dart';
 
-const String apiKey = "your api key";
+const String apiKey = "2607b6218ccd40d4bff191613250507";
 
 class WeatherApiService {
   final String _baseUrl = "https://api.weatherapi.com/v1";
