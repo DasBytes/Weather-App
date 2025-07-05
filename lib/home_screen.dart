@@ -225,13 +225,16 @@ class _WeatherAppHomeScreenState extends ConsumerState<WeatherAppHomeScreen> {
                                   width: 30,
                                   height: 30,
                                 ),
-                                Text(
-                                  "${currentValue['wind_kph']} kph",
-                                  style: TextStyle(
-                                    color: Theme.of(context).colorScheme.secondary,
-                                    fontWeight: FontWeight.bold,
-                                  ),
-                                ),
+                               Text(
+  currentValue['wind_kph'] != null
+      ? "${currentValue['wind_kph']} kph"
+      : "N/A",
+  style: TextStyle(
+    color: Theme.of(context).colorScheme.secondary,
+    fontWeight: FontWeight.bold,
+  ),
+),
+
                                 Text(
                                   "Wind",
                                   style: TextStyle(
@@ -251,13 +254,16 @@ class _WeatherAppHomeScreenState extends ConsumerState<WeatherAppHomeScreen> {
                                   width: 30,
                                   height: 30,
                                 ),
-                                Text(
-                                  "${hourly.isNotEmpty ? hourly.map((h) => h['temp_c']).reduce((a, b) => a > b ? a : b) : "N/A"}",
-                                  style: TextStyle(
-                                    color: Theme.of(context).colorScheme.secondary,
-                                    fontWeight: FontWeight.bold,
-                                  ),
-                                ),
+                               Text(
+  (hourly.isNotEmpty && hourly.first['temp_c'] != null)
+      ? "${hourly.map((h) => h['temp_c']).reduce((a, b) => a > b ? a : b)}°C"
+      : "N/A",
+  style: TextStyle(
+    color: Theme.of(context).colorScheme.secondary,
+    fontWeight: FontWeight.bold,
+  ),
+),
+
                                 Text(
                                   "Max Temp",
                                   style: TextStyle(
