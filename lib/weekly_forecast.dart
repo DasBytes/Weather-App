@@ -75,7 +75,7 @@ class _WeeklyForecastState extends State<WeeklyForecast> {
               ),
               ),
               // Next 7 days Forecast
-              SizedBox(height: 20,)
+              SizedBox(height: 20,),
               Text(
                 "Next 7 days forecast",
                 style: TextStyle(
@@ -86,16 +86,61 @@ class _WeeklyForecastState extends State<WeeklyForecast> {
               ),
               SizedBox(height: 10,),
               ...widget.next7days.map((day) {
-                final data = day['data'] ?? "";
+                final data = day['date'] ?? "";
                 final condition = day['day']?['condition']?['text'] ?? '';
-                final Icon = day['day']?['condition']?['icon'] ?? '';
-                final maxtemp = day['day']?['maxtemp_c'] ?? '';
-                final mintemp = day['day']?['mintemp_c'] ?? '';
+                final icon = day['day']?['condition']?['icon'] ?? '';
+                final maxTemp = day['day']?['maxtemp_c'] ?? '';
+                final minTemp = day['day']?['mintemp_c'] ?? '';
                 return ListTile(
-                  leading: Image.network('https:$Icon',width: 40,),
-                  title: Text(data),
+                  leading: Image.network('https:$icon',width: 40,),
+                  title: Text(
+                    formatApiData(data),
+                    style: TextStyle(
+                      color: Theme.of(context).colorScheme.secondary,
+                    ),
+                  ),
+                  subtitle: Text("$condition $minTemp°C - $maxTemp°C", style: TextStyle(
+                    color: Theme.of(context).colorScheme.secondary,
+
+                  ),
+                  ),
                 );
+
+                
               }),
+
+
+               // Next 7 days Forecast
+              SizedBox(height: 20,),
+              Text(
+                "Previous 7 days forecast",
+                style: TextStyle(
+                  fontSize: 18,
+                  fontWeight: FontWeight.bold,
+                  color: Theme.of(context).colorScheme.secondary,
+                ),
+              ),
+              SizedBox(height: 10,),
+              ...widget.pastWeek.map((day) {
+                final data = day['date'] ?? "";
+                final condition = day['day']?['condition']?['text'] ?? '';
+                final icon = day['day']?['condition']?['icon'] ?? '';
+                final maxTemp = day['day']?['maxtemp_c'] ?? '';
+                final minTemp = day['day']?['mintemp_c'] ?? '';
+                return ListTile(
+                  leading: Image.network('https:$icon',width: 40,),
+                  title: Text(
+                    formatApiData(data),
+                    style: TextStyle(
+                      color: Theme.of(context).colorScheme.secondary,
+                    ),
+                  ),
+                  subtitle: Text("$condition $minTemp°C - $maxTemp°C", style: TextStyle(
+                    color: Theme.of(context).colorScheme.secondary,
+
+                  ),
+                  ),
+                );
 
 
 
