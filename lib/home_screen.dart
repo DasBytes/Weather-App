@@ -16,7 +16,7 @@ class WeatherAppHomeScreen extends ConsumerStatefulWidget {
 
 class _WeatherAppHomeScreenState extends ConsumerState<WeatherAppHomeScreen> {
   final _weatherService = WeatherApiService();
-  String city = "Surkhet";
+  String city = "Chittagong";
   String country = '';
   Map<String, dynamic> currentValue = {};
   List<dynamic> hourly = [];
@@ -82,6 +82,66 @@ class _WeatherAppHomeScreenState extends ConsumerState<WeatherAppHomeScreen> {
         : const SizedBox();
 
     return Scaffold(
+      // === ADD DRAWER HERE ===
+      drawer: Drawer(
+        child: ListView(
+          padding: EdgeInsets.zero,
+          children: [
+            DrawerHeader(
+              decoration: BoxDecoration(
+                gradient: LinearGradient(
+                  colors: isDark
+                      ? [Colors.grey.shade900, Colors.grey.shade800]
+                      : [Colors.blue.shade200, Colors.blue.shade400],
+                  begin: Alignment.topCenter,
+                  end: Alignment.bottomCenter,
+                ),
+              ),
+              child: Text(
+                'Menu',
+                style: TextStyle(
+                  fontSize: 24,
+                  color: isDark ? Colors.white : Colors.black87,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+            ),
+            ListTile(
+              leading: const Icon(Icons.star),
+              title: const Text('Favorite Cities'),
+              onTap: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) => const FavoriteCitiesPage()),
+                );
+              },
+            ),
+            ListTile(
+              leading: const Icon(Icons.settings),
+              title: const Text('Settings'),
+              onTap: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) => const SettingsPage()),
+                );
+              },
+            ),
+            ListTile(
+              leading: const Icon(Icons.info),
+              title: const Text('About / Help'),
+              onTap: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) => const AboutHelpPage()),
+                );
+              },
+            ),
+          ],
+        ),
+      ),
       body: Container(
         decoration: BoxDecoration(
           gradient: LinearGradient(
@@ -138,8 +198,9 @@ class _WeatherAppHomeScreenState extends ConsumerState<WeatherAppHomeScreen> {
                                 color: isDark ? Colors.white70 : Colors.grey,
                               ),
                               prefixIcon: Icon(
-                                Icons.search_sharp,
-                                
+                                Icons.search,
+                                color: isDark ? Colors.white : Colors.black87,
+                                size: 24,
                               ),
                               border: InputBorder.none,
                               contentPadding: const EdgeInsets.all(15),
@@ -152,6 +213,7 @@ class _WeatherAppHomeScreenState extends ConsumerState<WeatherAppHomeScreen> {
                         color: isDark ? Colors.white : Colors.black,
                         shape: const CircleBorder(),
                         child: IconButton(
+                          iconSize: 24,
                           icon: Icon(
                             isDark ? Icons.light_mode : Icons.dark_mode,
                             color: isDark ? Colors.black : Colors.white,
@@ -405,6 +467,40 @@ class _WeatherAppHomeScreenState extends ConsumerState<WeatherAppHomeScreen> {
           ),
         ],
       ),
+    );
+  }
+}
+
+// === CREATE SEPARATE PAGES ===
+class FavoriteCitiesPage extends StatelessWidget {
+  const FavoriteCitiesPage({super.key});
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(title: const Text("Favorite Cities")),
+      body: const Center(child: Text("List of saved favorite cities")),
+    );
+  }
+}
+
+class SettingsPage extends StatelessWidget {
+  const SettingsPage({super.key});
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(title: const Text("Settings")),
+      body: const Center(child: Text("App settings (units, notifications, theme)")),
+    );
+  }
+}
+
+class AboutHelpPage extends StatelessWidget {
+  const AboutHelpPage({super.key});
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(title: const Text("About / Help")),
+      body: const Center(child: Text("App info, developer contact, FAQs")),
     );
   }
 }
