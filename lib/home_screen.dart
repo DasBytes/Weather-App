@@ -21,7 +21,6 @@ class _WeatherAppHomeScreenState extends ConsumerState<WeatherAppHomeScreen> {
   List<dynamic> hourly = [];
   List<dynamic> pastWeek = [];
   List<dynamic> next7days = [];
-
   bool isLoading = false;
 
   @override
@@ -76,7 +75,14 @@ class _WeatherAppHomeScreenState extends ConsumerState<WeatherAppHomeScreen> {
     String imageUrl = iconPath.isNotEmpty ? "https:$iconPath" : "";
 
     Widget imageWidget = imageUrl.isNotEmpty
-        ? Image.network(imageUrl, height: 180, width: 180, fit: BoxFit.cover)
+        ? Image.network(
+            imageUrl,
+            height: 180,
+            width: 180,
+            fit: BoxFit.cover,
+            errorBuilder: (_, __, ___) =>
+                const Icon(Icons.cloud_off, size: 80),
+          )
         : const SizedBox();
 
     return Scaffold(
@@ -94,7 +100,7 @@ class _WeatherAppHomeScreenState extends ConsumerState<WeatherAppHomeScreen> {
           child: SingleChildScrollView(
             child: Column(
               children: [
-                // 🔎 Search + Theme toggle
+                // Search + Theme toggle
                 Padding(
                   padding:
                       const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
@@ -151,7 +157,7 @@ class _WeatherAppHomeScreenState extends ConsumerState<WeatherAppHomeScreen> {
                         shape: const CircleBorder(),
                         child: IconButton(
                           icon: Icon(
-                            isDark ? Icons.light_mode : Icons.dark_mode,
+                            isDark ? Icons.dark_mode : Icons.dark_mode,
                             color: isDark ? Colors.black : Colors.white,
                           ),
                           onPressed: notifier.toggleTheme,
@@ -167,7 +173,6 @@ class _WeatherAppHomeScreenState extends ConsumerState<WeatherAppHomeScreen> {
                 else if (currentValue.isNotEmpty)
                   Column(
                     children: [
-                      // 🌆 City name
                       Text(
                         "$city${country.isNotEmpty ? ', $country' : ''}",
                         style: TextStyle(
@@ -177,8 +182,6 @@ class _WeatherAppHomeScreenState extends ConsumerState<WeatherAppHomeScreen> {
                         ),
                       ),
                       const SizedBox(height: 10),
-
-                      // 🌡 Temperature
                       Text(
                         "${currentValue['temp_c']}°C",
                         style: TextStyle(
@@ -188,8 +191,6 @@ class _WeatherAppHomeScreenState extends ConsumerState<WeatherAppHomeScreen> {
                         ),
                       ),
                       const SizedBox(height: 5),
-
-                      // 🌥 Condition
                       Text(
                         "${currentValue['condition']?['text'] ?? ''}",
                         style: TextStyle(
@@ -198,11 +199,9 @@ class _WeatherAppHomeScreenState extends ConsumerState<WeatherAppHomeScreen> {
                         ),
                       ),
                       const SizedBox(height: 10),
-
                       imageWidget,
                       const SizedBox(height: 15),
 
-                      // 📊 Stats card
                       Padding(
                         padding: const EdgeInsets.symmetric(horizontal: 16),
                         child: Container(
@@ -224,12 +223,12 @@ class _WeatherAppHomeScreenState extends ConsumerState<WeatherAppHomeScreen> {
                               _buildStatColumn(
                                   "Humidity",
                                   "${currentValue['humidity'] ?? 'N/A'}%",
-                                  "https://cdn-icons-png.freepik.com/512/9290/9290540.png",
+                                  "https://cdn-icons-png.flaticon.com/512/9290/9290540.png",
                                   isDark),
                               _buildStatColumn(
                                   "Wind",
                                   "${currentValue['wind_kph'] ?? 'N/A'} kph",
-                                  "https://png.pngtree.com/png-clipart/20190705/original/pngtree-vector-wind-icon-png-image_4184509.jpg",
+                                  "https://img.freepik.com/premium-vector/wind-icon-logo-design-template_586739-1597.jpg",
                                   isDark),
                               _buildStatColumn(
                                   "Max Temp",
@@ -237,13 +236,12 @@ class _WeatherAppHomeScreenState extends ConsumerState<WeatherAppHomeScreen> {
                                           hourly.first['temp_c'] != null)
                                       ? "${hourly.map((h) => h['temp_c']).reduce((a, b) => a > b ? a : b)}°C"
                                       : "N/A",
-                                  "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRbJS4wbuG9-dwHi7BFEESu4TLLIWIUBRmacw&s",
+                                  "https://www.svgrepo.com/show/341132/temperature-max.svg",
                                   isDark),
                             ],
                           ),
                         ),
                       ),
-
                       const SizedBox(height: 20),
                       _buildHourlyForecast(isDark),
                     ],
@@ -261,7 +259,12 @@ class _WeatherAppHomeScreenState extends ConsumerState<WeatherAppHomeScreen> {
     return Column(
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
-        Image.network(iconUrl, width: 30, height: 30),
+        Image.network(
+          iconUrl,
+          width: 30,
+          height: 30,
+          errorBuilder: (_, __, ___) => const Icon(Icons.error, size: 30),
+        ),
         const SizedBox(height: 5),
         Text(
           value,
@@ -330,8 +333,6 @@ class _WeatherAppHomeScreenState extends ConsumerState<WeatherAppHomeScreen> {
           ),
           const Divider(height: 1, thickness: 1, color: Colors.white24),
           const SizedBox(height: 10),
-
-          // ✅ Fixed overflow by giving each card a fixed width
           SizedBox(
             height: 165,
             child: ListView.builder(
@@ -345,7 +346,7 @@ class _WeatherAppHomeScreenState extends ConsumerState<WeatherAppHomeScreen> {
                     now.hour == hourTime.hour && now.day == hourTime.day;
 
                 return Container(
-                  width: 90, // fixed width prevents overflow
+                  width: 90,
                   margin: const EdgeInsets.symmetric(horizontal: 8),
                   padding: const EdgeInsets.all(12),
                   decoration: BoxDecoration(
@@ -382,6 +383,8 @@ class _WeatherAppHomeScreenState extends ConsumerState<WeatherAppHomeScreen> {
                         "https:${hour['condition']?['icon']}",
                         width: 40,
                         height: 40,
+                        errorBuilder: (_, __, ___) =>
+                            const Icon(Icons.cloud_off, size: 40),
                       ),
                       const SizedBox(height: 10),
                       Text(
