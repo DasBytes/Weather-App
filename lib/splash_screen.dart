@@ -10,19 +10,21 @@ class SplashScreen extends StatefulWidget {
 }
 
 class _SplashScreenState extends State<SplashScreen> {
-
   late Timer _timer;
-  final Color buttonColor = Colors.blueAccent;
-@override
+
+  @override
   void initState() {
-   _timer = Timer(Duration(seconds: 3), () {
-//check if the widget is still mounted before navigating
-   if(mounted) {
-    Navigator.pushReplacement(context, MaterialPageRoute(builder: (context)=> WeatherAppHomeScreen() ),
-    );
-   }
-   });
     super.initState();
+
+    // Navigate to HomeScreen after 3 seconds
+    _timer = Timer(const Duration(seconds: 3), () {
+      if (mounted) {
+        Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(builder: (context) => const WeatherAppHomeScreen()),
+        );
+      }
+    });
   }
 
   @override
@@ -33,74 +35,88 @@ class _SplashScreenState extends State<SplashScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final isDark = Theme.of(context).brightness == Brightness.dark;
+    final textColor = isDark ? Colors.white : Colors.grey.shade900;
+    final buttonColor = isDark ? Colors.orangeAccent : Colors.blueAccent;
+
     return Scaffold(
-      backgroundColor: Theme.of(context).primaryColor,
-      body: SafeArea(
-        child: Padding(
-          padding: const EdgeInsets.symmetric(vertical: 40),
-          child: Column(
-            children: [
-               Center(
-                child: Text(
-                  "Discover The\n Weather In Your City",
+      body: Container(
+        width: double.infinity,
+        height: double.infinity,
+        decoration: BoxDecoration(
+          gradient: LinearGradient(
+            colors: isDark
+                ? [Colors.grey.shade900, Colors.grey.shade800]
+                : [Colors.blue.shade200, Colors.blue.shade400],
+            begin: Alignment.topCenter,
+            end: Alignment.bottomCenter,
+          ),
+        ),
+        child: SafeArea(
+          child: Padding(
+            padding: const EdgeInsets.symmetric(vertical: 40, horizontal: 20),
+            child: Column(
+              children: [
+                const Spacer(),
+                Text(
+                  "Discover The\nWeather In Your City",
                   textAlign: TextAlign.center,
                   style: TextStyle(
                     fontSize: 32,
                     fontWeight: FontWeight.w800,
                     letterSpacing: -0.5,
                     height: 1.2,
-                    color:  Theme.of(context).colorScheme.secondary,
+                    color: textColor,
                   ),
                 ),
-              ),
-              const Spacer(),
-              Image.asset("assets/cloudy.png", height: 350),
-              const Spacer(),
-               Center(
-                child: Text(
-                  "Get to know your weather maps\n radar recipitations forecast",
+                const Spacer(),
+                // Splash Image
+                Image.asset(
+                  "assets/cloudy.png",
+                  height: 300,
+                  fit: BoxFit.contain,
+                ),
+                const Spacer(),
+                Text(
+                  "Get to know your weather maps, radar, precipitation forecasts",
                   textAlign: TextAlign.center,
                   style: TextStyle(
-                    fontSize: 17,
+                    fontSize: 16,
                     fontWeight: FontWeight.w400,
-                    color:  Theme.of(context).colorScheme.secondary,
+                    color: textColor.withOpacity(0.85),
                   ),
                 ),
-              ),
-              Padding(
-                padding: const EdgeInsets.only(top: 30),
-                child: ElevatedButton(
+                const SizedBox(height: 30),
+                ElevatedButton(
                   style: ElevatedButton.styleFrom(
                     backgroundColor: buttonColor,
                     shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(20),
+                      borderRadius: BorderRadius.circular(25),
                     ),
+                    padding: const EdgeInsets.symmetric(
+                        horizontal: 50, vertical: 15),
+                    elevation: 5,
                   ),
                   onPressed: () {
-                    // cancel the timer when the button is pressed to prevent the timer navigation
                     _timer.cancel();
-    Navigator.pushReplacement(
-      context,
-     MaterialPageRoute(
-      builder: (context)=> WeatherAppHomeScreen()
-       ),
-    );
+                    Navigator.pushReplacement(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => const WeatherAppHomeScreen()),
+                    );
                   },
-                  child:  Padding(
-                    padding:
-                        EdgeInsets.symmetric(horizontal: 50, vertical: 15),
-                    child: Text(
-                      "Get started",
-                      style: TextStyle(
-                        fontWeight: FontWeight.bold,
-                        fontSize: 18,
-                        color:  Theme.of(context).colorScheme.secondary,
-                      ),
+                  child: Text(
+                    "Get Started",
+                    style: TextStyle(
+                      fontWeight: FontWeight.bold,
+                      fontSize: 18,
+                      color: isDark ? Colors.black : Colors.white,
                     ),
                   ),
                 ),
-              ),
-            ],
+                const SizedBox(height: 20),
+              ],
+            ),
           ),
         ),
       ),

@@ -138,8 +138,8 @@ class _WeatherAppHomeScreenState extends ConsumerState<WeatherAppHomeScreen> {
                                 color: isDark ? Colors.white70 : Colors.grey,
                               ),
                               prefixIcon: Icon(
-                                Icons.search,
-                                color: isDark ? Colors.white : Colors.black87,
+                                Icons.search_sharp,
+                                
                               ),
                               border: InputBorder.none,
                               contentPadding: const EdgeInsets.all(15),
