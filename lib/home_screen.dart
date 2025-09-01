@@ -236,7 +236,7 @@ class _WeatherAppHomeScreenState extends ConsumerState<WeatherAppHomeScreen> {
                                           hourly.first['temp_c'] != null)
                                       ? "${hourly.map((h) => h['temp_c']).reduce((a, b) => a > b ? a : b)}°C"
                                       : "N/A",
-                                  "https://www.svgrepo.com/show/341132/temperature-max.svg",
+                                  "https://png.pngtree.com/element_our/20190528/ourmid/pngtree-flat-temperature-icon-download-image_1148255.jpg",
                                   isDark),
                             ],
                           ),
