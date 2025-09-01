@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:intl/intl.dart';
 import 'package:weather_flutter/provider/theme_provider.dart';
 import 'package:weather_flutter/service/api_service_dart';
+
 import 'package:weather_flutter/weekly_forecast.dart';
 
 class WeatherAppHomeScreen extends ConsumerStatefulWidget {
@@ -34,7 +35,7 @@ class _WeatherAppHomeScreenState extends ConsumerState<WeatherAppHomeScreen> {
     setState(() => isLoading = true);
     try {
       final forecast = await _weatherService.getHourlyForecast(city);
-      final past = await _weatherService.getOastSevenDaysweather(city); // typo fixed
+      final past = await _weatherService.getOastSevenDaysweather(city);
 
       setState(() {
         currentValue = forecast['current'] ?? {};
@@ -55,7 +56,8 @@ class _WeatherAppHomeScreenState extends ConsumerState<WeatherAppHomeScreen> {
       });
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(
-          content: Text("City not found or invalid. Please enter a valid city name"),
+          content: Text(
+              "City not found or invalid. Please enter a valid city name"),
         ),
       );
     }
@@ -80,7 +82,6 @@ class _WeatherAppHomeScreenState extends ConsumerState<WeatherAppHomeScreen> {
         : const SizedBox();
 
     return Scaffold(
-      // Modern gradient background
       body: Container(
         decoration: BoxDecoration(
           gradient: LinearGradient(
@@ -95,9 +96,10 @@ class _WeatherAppHomeScreenState extends ConsumerState<WeatherAppHomeScreen> {
           child: SingleChildScrollView(
             child: Column(
               children: [
-                // AppBar area
+                // Search and theme toggle
                 Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
                   child: Row(
                     children: [
                       Expanded(
@@ -115,7 +117,8 @@ class _WeatherAppHomeScreenState extends ConsumerState<WeatherAppHomeScreen> {
                           ),
                           child: TextField(
                             style: TextStyle(
-                                color: isDark ? Colors.white : Colors.black),
+                              color: isDark ? Colors.white : Colors.black87,
+                            ),
                             onSubmitted: (value) {
                               if (value.trim().isEmpty) {
                                 ScaffoldMessenger.of(context).showSnackBar(
@@ -134,8 +137,10 @@ class _WeatherAppHomeScreenState extends ConsumerState<WeatherAppHomeScreen> {
                               hintStyle: TextStyle(
                                 color: isDark ? Colors.white70 : Colors.grey,
                               ),
-                              prefixIcon: Icon(Icons.search,
-                                  color: isDark ? Colors.white : Colors.black),
+                              prefixIcon: Icon(
+                                Icons.search,
+                                color: isDark ? Colors.white : Colors.black87,
+                              ),
                               border: InputBorder.none,
                               contentPadding: const EdgeInsets.all(15),
                             ),
@@ -143,17 +148,17 @@ class _WeatherAppHomeScreenState extends ConsumerState<WeatherAppHomeScreen> {
                         ),
                       ),
                       const SizedBox(width: 10),
-                      GestureDetector(
-                        onTap: notifier.toggleTheme,
-                        child: CircleAvatar(
-                          backgroundColor:
-                              isDark ? Colors.white : Colors.black,
-                          child: Icon(
+                      Material(
+                        color: isDark ? Colors.white : Colors.black,
+                        shape: const CircleBorder(),
+                        child: IconButton(
+                          icon: Icon(
                             isDark ? Icons.light_mode : Icons.dark_mode,
                             color: isDark ? Colors.black : Colors.white,
                           ),
+                          onPressed: notifier.toggleTheme,
                         ),
-                      )
+                      ),
                     ],
                   ),
                 ),
@@ -164,15 +169,13 @@ class _WeatherAppHomeScreenState extends ConsumerState<WeatherAppHomeScreen> {
                 else if (currentValue.isNotEmpty)
                   Column(
                     children: [
-                      // City name
+                      // City
                       Text(
                         "$city${country.isNotEmpty ? ', $country' : ''}",
                         style: TextStyle(
                           fontSize: 36,
                           fontWeight: FontWeight.bold,
-                          color: isDark
-                              ? Colors.white
-                              : Colors.grey.shade900,
+                          color: isDark ? Colors.white : Colors.grey.shade900,
                         ),
                       ),
                       const SizedBox(height: 10),
@@ -186,7 +189,7 @@ class _WeatherAppHomeScreenState extends ConsumerState<WeatherAppHomeScreen> {
                         ),
                       ),
                       const SizedBox(height: 5),
-                      // Condition text
+                      // Condition
                       Text(
                         "${currentValue['condition']?['text'] ?? ''}",
                         style: TextStyle(
@@ -204,9 +207,7 @@ class _WeatherAppHomeScreenState extends ConsumerState<WeatherAppHomeScreen> {
                         child: Container(
                           padding: const EdgeInsets.all(16),
                           decoration: BoxDecoration(
-                            color: isDark
-                                ? Colors.grey.shade800
-                                : Colors.white,
+                            color: isDark ? Colors.grey.shade800 : Colors.white,
                             borderRadius: BorderRadius.circular(25),
                             boxShadow: [
                               BoxShadow(
@@ -253,7 +254,8 @@ class _WeatherAppHomeScreenState extends ConsumerState<WeatherAppHomeScreen> {
     );
   }
 
-  Column _buildStatColumn(String label, String value, String iconUrl, bool isDark) {
+  Column _buildStatColumn(
+      String label, String value, String iconUrl, bool isDark) {
     return Column(
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
@@ -340,8 +342,8 @@ class _WeatherAppHomeScreenState extends ConsumerState<WeatherAppHomeScreen> {
                 final hour = hourly[index];
                 final now = DateTime.now();
                 final hourTime = DateTime.parse(hour['time']);
-                final isCurrentHour = now.hour == hourTime.hour &&
-                    now.day == hourTime.day;
+                final isCurrentHour =
+                    now.hour == hourTime.hour && now.day == hourTime.day;
 
                 return Padding(
                   padding: const EdgeInsets.all(8),
@@ -366,9 +368,7 @@ class _WeatherAppHomeScreenState extends ConsumerState<WeatherAppHomeScreen> {
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         Text(
-                          isCurrentHour
-                              ? "Now"
-                              : formatTime(hour['time']),
+                          isCurrentHour ? "Now" : formatTime(hour['time']),
                           style: TextStyle(
                             color: isCurrentHour
                                 ? Colors.white
