@@ -1,3 +1,4 @@
+import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:intl/intl.dart';
@@ -282,62 +283,85 @@ class _WeatherAppHomeScreenState extends ConsumerState<WeatherAppHomeScreen> {
       ],
     );
   }
-
   Widget _buildHourlyForecast(bool isDark) {
     return Container(
-      margin: const EdgeInsets.symmetric(vertical: 10),
+      margin: const EdgeInsets.symmetric(vertical: 10, horizontal: 12),
+      padding: const EdgeInsets.all(16),
       decoration: BoxDecoration(
-        color: isDark ? Colors.grey.shade900 : Colors.blue.shade100,
-        borderRadius: const BorderRadius.vertical(top: Radius.circular(30)),
+        color: isDark ? Colors.black : Colors.blue.shade50,
+        borderRadius: BorderRadius.circular(25),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black26,
+            blurRadius: 6,
+            offset: const Offset(2, 2),
+          ),
+        ],
       ),
       child: Column(
         children: [
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 15),
-            child: Row(
-              children: [
-                Text(
-                  "Today Forecast",
-                  style: TextStyle(
-                    fontSize: 18,
-                    fontWeight: FontWeight.bold,
-                    color: isDark ? Colors.white : Colors.black87,
-                  ),
+          // Title + Weekly Navigation
+          Row(
+            children: [
+              Text(
+                "Hourly Forecast",
+                style: TextStyle(
+                  fontSize: 20,
+                  fontWeight: FontWeight.bold,
+                  color: isDark ? Colors.white : Colors.black87,
                 ),
-                const Spacer(),
-                GestureDetector(
-                  onTap: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => WeeklyForecast(
-                          city: city,
-                          currentValue: currentValue,
-                          pastWeek: pastWeek,
-                          next7days: next7days,
-                        ),
+              ),
+              const Spacer(),
+              GestureDetector(
+                onTap: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => WeeklyForecast(
+                        city: city,
+                        currentValue: currentValue,
+                        pastWeek: pastWeek,
+                        next7days: next7days,
                       ),
-                    );
-                  },
-                  child: Text(
-                    "Weekly Forecast",
-                    style: TextStyle(
-                      fontSize: 16,
-                      fontWeight: FontWeight.bold,
+                    ),
+                  );
+                },
+                child: Row(
+                  children: [
+                    Text(
+                      "7-Day",
+                      style: TextStyle(
+                        fontSize: 16,
+                        fontWeight: FontWeight.bold,
+                        color:
+                            isDark ? Colors.orangeAccent : Colors.blueAccent,
+                      ),
+                    ),
+                    const SizedBox(width: 5),
+                    Icon(
+                      Icons.arrow_forward_ios,
+                      size: 16,
                       color: isDark ? Colors.orangeAccent : Colors.blueAccent,
                     ),
-                  ),
+                  ],
                 ),
-              ],
-            ),
+              ),
+            ],
           ),
-          const Divider(height: 1, thickness: 1, color: Colors.white24),
-          const SizedBox(height: 10),
+          const SizedBox(height: 15),
+
+          // New Layout: Cards in grid-like style
           SizedBox(
-            height: 165,
-            child: ListView.builder(
+            height: 240,
+            child: GridView.builder(
               scrollDirection: Axis.horizontal,
               itemCount: hourly.length,
+              gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                crossAxisCount: 2, // two rows
+                mainAxisSpacing: 12,
+                crossAxisSpacing: 12,
+                childAspectRatio: 0.8,
+              ),
               itemBuilder: (context, index) {
                 final hour = hourly[index];
                 final now = DateTime.now();
@@ -345,57 +369,76 @@ class _WeatherAppHomeScreenState extends ConsumerState<WeatherAppHomeScreen> {
                 final isCurrentHour =
                     now.hour == hourTime.hour && now.day == hourTime.day;
 
-                return Container(
-                  width: 90,
-                  margin: const EdgeInsets.symmetric(horizontal: 8),
+                return AnimatedContainer(
+                  duration: const Duration(milliseconds: 300),
                   padding: const EdgeInsets.all(12),
                   decoration: BoxDecoration(
-                    color: isCurrentHour
-                        ? Colors.orangeAccent
-                        : isDark
-                            ? Colors.grey.shade800
-                            : Colors.white,
-                    borderRadius: BorderRadius.circular(30),
+                    gradient: isCurrentHour
+                        ? LinearGradient(
+                            colors: [Colors.orange, Colors.deepOrangeAccent],
+                            begin: Alignment.topLeft,
+                            end: Alignment.bottomRight,
+                          )
+                        : LinearGradient(
+                            colors: isDark
+                                ? [Colors.grey.shade800, Colors.grey.shade900]
+                                : [Colors.white, Colors.blue.shade100],
+                            begin: Alignment.topLeft,
+                            end: Alignment.bottomRight,
+                          ),
+                    borderRadius: BorderRadius.circular(20),
                     boxShadow: [
                       BoxShadow(
                         color: Colors.black26,
-                        blurRadius: 4,
+                        blurRadius: 5,
                         offset: const Offset(2, 2),
                       ),
                     ],
                   ),
                   child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
+                    mainAxisAlignment: MainAxisAlignment.spaceAround,
                     children: [
                       Text(
                         isCurrentHour ? "Now" : formatTime(hour['time']),
                         style: TextStyle(
+                          fontSize: 16,
+                          fontWeight: FontWeight.bold,
                           color: isCurrentHour
                               ? Colors.white
                               : isDark
                                   ? Colors.white70
                                   : Colors.black87,
-                          fontWeight: FontWeight.bold,
                         ),
                       ),
-                      const SizedBox(height: 10),
                       Image.network(
                         "https:${hour['condition']?['icon']}",
-                        width: 40,
-                        height: 40,
+                        width: 45,
+                        height: 45,
                         errorBuilder: (_, __, ___) =>
                             const Icon(Icons.cloud_off, size: 40),
                       ),
-                      const SizedBox(height: 10),
                       Text(
                         "${hour["temp_c"]}°C",
                         style: TextStyle(
+                          fontSize: 18,
+                          fontWeight: FontWeight.bold,
                           color: isCurrentHour
                               ? Colors.white
                               : isDark
-                                  ? Colors.white70
+                                  ? Colors.white
                                   : Colors.black87,
-                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                      Text(
+                        hour['condition']?['text'] ?? "",
+                        textAlign: TextAlign.center,
+                        style: TextStyle(
+                          fontSize: 13,
+                          color: isCurrentHour
+                              ? Colors.white70
+                              : isDark
+                                  ? Colors.white54
+                                  : Colors.black54,
                         ),
                       ),
                     ],
